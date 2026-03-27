@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
+app.use(express.json());
 const PORT = process.env.PORT || 4200;
 const HOST = '127.0.0.1';
 
