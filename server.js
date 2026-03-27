@@ -418,6 +418,22 @@ app.get('/bridge/docs', (req, res) => {
   res.json(scanDocDir(DOC_DIRS[type], type));
 });
 
+// Crons — return agent schedule from crons.json
+app.get('/bridge/crons', (req, res) => {
+  const cronsPath = path.join(WS_PRIME, 'crons.json');
+  try {
+    if (fs.existsSync(cronsPath)) {
+      const content = fs.readFileSync(cronsPath, 'utf8');
+      const data = JSON.parse(content);
+      return res.json(Array.isArray(data) ? { jobs: data } : data);
+    }
+    // Fallback: no crons file yet
+    return res.json({ jobs: [] });
+  } catch (err) {
+    return res.json({ jobs: [], _error: err.message });
+  }
+});
+
 // Notify — send Telegram message to Prime HQ thread
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
