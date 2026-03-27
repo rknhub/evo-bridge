@@ -211,6 +211,22 @@ function parseActivity(content, date) {
   return entries;
 }
 
+function normalizeSource(source) {
+  if (!source) return 'unknown';
+  const s = (typeof source === 'string' ? source : '').toLowerCase();
+  if (s.includes('reddit')) return 'reddit';
+  if (s.includes('producthunt') || s.includes('product hunt')) return 'product hunt';
+  if (s.includes('linkedin')) return 'linkedin';
+  if (s.includes('google play')) return 'google play';
+  if (s.includes('app store')) return 'app store';
+  if (s.includes('sensortower')) return 'sensortower';
+  if (s.includes('mobilegamer')) return 'mobilegamer';
+  if (s.includes('manual')) return 'manual';
+  if (s.includes('cron')) return 'cron';
+  if (s.includes('conference')) return 'conference';
+  return 'other';
+}
+
 function parseLeads(content) {
   if (!content) return [];
   const blocks = content.split(/^## /m).slice(1);
@@ -245,6 +261,8 @@ function parseLeads(content) {
         lead.notes.push(line);
       }
     }
+    // Add normalized source label (keep raw source intact)
+    lead.source_label = normalizeSource(lead.source);
     return lead;
   }).filter(Boolean);
 }
