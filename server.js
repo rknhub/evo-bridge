@@ -279,7 +279,7 @@ app.get('/bridge/health', (req, res) => {
       missions: fs.existsSync(path.join(WS_PRIME, 'MISSIONS.md')),
       tasks: fs.existsSync(path.join(WS_PRIME, 'TASKS.md')),
       policy: fs.existsSync(path.join(WS_PRIME, 'POLICY.md')),
-      leads: fs.existsSync(path.join(WS_QYREN, 'QYREN_LEADS.md')),
+      leads: fs.existsSync(path.join(WS_PRIME, 'QYREN_LEADS.md')),
       activity_dir: fs.existsSync(path.join(WS_PRIME, 'activity')),
       memory_prime: fs.existsSync(path.join(WS_PRIME, 'memory')),
     },
@@ -352,7 +352,7 @@ app.get('/bridge/activity', (req, res) => {
 
 // Leads
 app.get('/bridge/leads', (req, res) => {
-  const filePath = path.join(WS_QYREN, 'QYREN_LEADS.md');
+  const filePath = path.join(WS_PRIME, 'QYREN_LEADS.md');
   const { content, warning, error } = readFile(filePath, 'leads');
   if (warning) return res.json({ data: [], _warning: warning });
   const leads = parseLeads(content);
@@ -361,7 +361,7 @@ app.get('/bridge/leads', (req, res) => {
 });
 
 app.get('/bridge/leads/:id', (req, res) => {
-  const filePath = path.join(WS_QYREN, 'QYREN_LEADS.md');
+  const filePath = path.join(WS_PRIME, 'QYREN_LEADS.md');
   const { content } = readFile(filePath, 'leads');
   const leads = parseLeads(content);
   const lead = leads.find(l => l.id === req.params.id);
