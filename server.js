@@ -142,7 +142,7 @@ function parseMissions(content) {
         }
       } else if (section === 'steps') {
         // - [x] S-1 | worker-researcher | research_brief | done | 2026-03-26 06:47
-        const stepMatch = line.match(/^- \[([ xX])\]\s*(S-\d+)\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+?)(?:\|\s*(.*))?$/);
+        const stepMatch = line.match(/^- \[([ xX]|x done)\]\s*(S-\d+)\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+?)(?:\|\s*(.*))?$/);
         if (stepMatch) {
           mission.steps.push({
             id: stepMatch[2].trim(),
