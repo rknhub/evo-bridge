@@ -1,0 +1,17 @@
+{
+  "name": "evo-bridge",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "install-service": "cp ai.evo.bridge.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/ai.evo.bridge.plist",
+    "uninstall-service": "launchctl unload ~/Library/LaunchAgents/ai.evo.bridge.plist && rm ~/Library/LaunchAgents/ai.evo.bridge.plist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
