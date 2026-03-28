@@ -480,6 +480,40 @@ app.post('/bridge/notify', async (req, res) => {
   }
 });
 
+// ═══ CMD Action Endpoints (execute evo-scripts) ═══
+const { execSync } = require('child_process');
+const SCRIPTS_DIR = path.join(process.env.HOME, 'evo-scripts');
+
+app.post('/bridge/cmd-message', (req, res) => {
+  const { message } = req.body;
+  if (!message) return res.status(400).json({ error: 'message required' });
+  try {
+    const result = execSync(
+      `/bin/bash ${path.join(SCRIPTS_DIR, 'evo-handle-cmd-message')} ${JSON.stringify(message)}`,
+      { encoding: 'utf8', env: { ...process.env }, timeout: 30000 }
+    );
+    res.json({ ok: true, result: result.trim() });
+  } catch (err) {
+    console.error('cmd-message error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/bridge/open-mission', (req, res) => {
+  const { topic, type } = req.body;
+  if (!topic) return res.status(400).json({ error: 'topic required' });
+  try {
+    const result = execSync(
+      `/bin/bash ${path.join(SCRIPTS_DIR, 'evo-open-mission-qyren')} ${JSON.stringify(topic)} ${type || 'blog'}`,
+      { encoding: 'utf8', env: { ...process.env }, timeout: 30000 }
+    );
+    res.json({ ok: true, result: result.trim() });
+  } catch (err) {
+    console.error('open-mission error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Start
 app.listen(PORT, HOST, () => {
   console.log(`evo-bridge listening on ${HOST}:${PORT}`);
